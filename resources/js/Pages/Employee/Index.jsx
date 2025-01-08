@@ -2,22 +2,30 @@ import { router } from '@inertiajs/react';
 import { useState } from 'react';
 
 export default function Index({ employees, query, sortColumn, sortDirection }) {
+    // search 
     const [search, setSearch] = useState(query || '');
+
+    // sort
     const [sort, setSort] = useState({
-        column: sortColumn || 'emp_no', // ค่าเริ่มต้นคอลัมน์
-        direction: sortDirection || 'asc', // ค่าเริ่มต้นการเรียง
+        column: sortColumn || 'emp_no',
+        direction: sortDirection || 'asc',
     });
 
+    // search function
     const handleSearch = (e) => {
         e.preventDefault();
         router.get('/employee', { search, sort: sort.column, direction: sort.direction });
     };
 
+    // sort function
     const handleSort = (column) => {
         const direction = sort.column === column && sort.direction === 'asc' ? 'desc' : 'asc';
         setSort({ column, direction });
         router.get('/employee', { search, sort: column, direction });
     };
+
+    // employees Pagination test
+    console.log(employees.links)
 
     return (
         <div className="p-8 bg-gray-100 min-h-screen">
@@ -96,7 +104,7 @@ export default function Index({ employees, query, sortColumn, sortDirection }) {
                                 : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                         } ${!link.url && 'cursor-not-allowed opacity-50'}`}
                     >
-                        {link.label.replace('&laquo;', 'Previous').replace('&raquo;', 'Next')}
+                        {link.label.replace("&laquo; Previous", 'Previous').replace("Next &raquo;", "Next")}
                     </button>
                 ))}
             </div>
